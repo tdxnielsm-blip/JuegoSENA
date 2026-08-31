@@ -1,228 +1,318 @@
-// --- BANCO DE PREGUNTAS (40 PREGUNTAS SENA TRIMESTRES 1 Y 2) ---
-const bancoDePreguntas = [
-    // --- LÓGICA Y ALGORITMIA ---
-    { q: "¿Cuál es la función del operador módulo (%) en programación?", o: ["Calcular un porcentaje", "Obtener el residuo de una división entera", "Dividir dos números decimales", "Elevar un número a una potencia"], a: 1 },
-    { q: "En algoritmia, ¿cuándo se utiliza la estructura repetitiva 'mientras' (while)?", o: ["Cuando se conoce exactamente el número de repeticiones", "Cuando no se conoce con certeza la cantidad de iteraciones", "Únicamente cuando se trabajan arreglos numéricos", "Nunca, funciona exactamente igual al bucle for"], a: 1 },
-    { q: "¿Qué resultado devuelve la expresión lógica: (5 > 2) && (4 < 1)?", o: ["verdadero (true)", "falso (false)", "null", "undefined"], a: 1 },
-    { q: "En la mayoría de lenguajes de programación, ¿cuál es el índice inicial de un arreglo (array)?", o: ["1", "-1", "0", "Depende del tamaño"], a: 2 },
-    { q: "¿Cómo se define formalmente un algoritmo?", o: ["Un programa compilado en código máquina", "Una secuencia finita, precisa y ordenada de pasos para resolver un problema", "Un diagrama exclusivo de bases de datos", "Un error de sintaxis"], a: 1 },
-    { q: "¿Cuál es el propósito fundamental de realizar una prueba de escritorio a un algoritmo?", o: ["Traducir código a HTML", "Verificar la lógica y el flujo de variables manualmente antes de codificar", "Diseñar la interfaz de usuario", "Optimizar el uso de la memoria RAM"], a: 1 },
-    { q: "¿Qué caracteriza a una constante respecto a una variable?", o: ["Su valor cambia en cada iteración", "Su valor asignado no se puede modificar durante la ejecución del programa", "Solo almacena cadenas de texto", "Ocupa el doble de memoria"], a: 1 },
-    { q: "¿Qué estructura condicional es ideal para evaluar múltiples casos de una misma variable?", o: ["if-else", "switch / según", "while", "for-each"], a: 1 },
-    { q: "¿Qué tipo de dato primitivo almacena un valor de verdad (verdadero o falso)?", o: ["String", "Integer", "Boolean", "Float"], a: 2 },
-    { q: "En programación modular, ¿qué es un parámetro dentro de una función?", o: ["El valor de retorno", "Una variable de entrada que la función recibe para procesar", "El nombre asignado a la función", "Un error de compilación"], a: 1 },
-
-    // --- HTML5 Y MAQUETACIÓN WEB ---
-    { q: "¿Qué etiqueta semántica de HTML5 representa la sección de navegación principal?", o: ["<navigation>", "<nav>", "<menu>", "<header>"], a: 1 },
-    { q: "¿Qué atributo es obligatorio en la etiqueta <img> para garantizar la accesibilidad web?", o: ["title", "src", "alt", "description"], a: 2 },
-    { q: "¿Qué etiqueta HTML se utiliza para definir hipervínculos o enlaces?", o: ["<link>", "<a>", "<href>", "<url>"], a: 1 },
-    { q: "¿Cuál es la diferencia entre <input type='checkbox'> y <input type='radio'>?", o: ["Checkbox permite selección múltiple; Radio permite seleccionar solo una opción de un grupo", "Radio permite múltiples selecciones; Checkbox solo una", "Ambos funcionan exactamente igual", "Radio solo sirve para enviar el formulario"], a: 0 },
-    { q: "¿Qué etiqueta HTML se utiliza para estructurar celdas de encabezado en una tabla?", o: ["<td>", "<tr>", "<th>", "<thead_cell>"], a: 2 },
-    { q: "¿Cómo se enlaza correctamente un archivo JavaScript externo a un documento HTML?", o: ["<script href='script.js'></script>", "<script src='script.js'></script>", "<link rel='javascript' href='script.js'>", "<js src='script.js'></js>"], a: 1 },
-    { q: "¿Qué etiqueta semántica HTML5 representa un artículo o contenido independiente?", o: ["<section>", "<div>", "<article>", "<aside>"], a: 2 },
-    { q: "¿Cómo se vincula una hoja de estilos CSS externa en el documento HTML?", o: ["<style src='estilos.css'>", "<link rel='stylesheet' href='estilos.css'>", "<css href='estilos.css'>", "<script src='estilos.css'></script>"], a: 1 },
-
-    // --- REQUISITOS E HISTORIAS DE USUARIO ---
-    { q: "¿Cuál de los siguientes es un ejemplo de Requisito No Funcional?", o: ["El sistema debe permitir registrar usuarios", "El sistema debe procesar las peticiones en menos de 2 segundos", "El usuario puede descargar reportes en PDF", "El administrador puede eliminar registros"], a: 1 },
-    { q: "¿Cuál es la estructura estándar de una Historia de Usuario?", o: ["Como [Rol], quiero [Acción], para [Beneficio]", "Si [Condición], entonces [Resultado], porque [Razón]", "Entrada -> Proceso -> Salida", "Actor -> Caso de Uso -> Sistema"], a: 0 },
-    { q: "En historias de usuario, ¿qué establecen los Criterios de Aceptación?", o: ["Que la funcionalidad fue codificada en el backend", "Las condiciones específicas que deben cumplirse para dar la historia por completada", "La aprobación de colores del diseño", "Que el código no requiere pruebas"], a: 1 },
-    { q: "En un Diagrama de Casos de Uso UML, ¿qué indica la relación <<include>>?", o: ["Una funcionalidad condicional u opcional", "Una funcionalidad obligatoria que el caso de uso base siempre debe ejecutar", "Una herencia entre actores", "Conexión a la base de datos"], a: 1 },
-    { q: "En un Diagrama de Casos de Uso, ¿qué representa la relación <<extend>>?", o: ["Una funcionalidad obligatoria y continua", "Una funcionalidad opcional que amplía la conducta del caso base según una condición", "Una conexión física de red", "La eliminación de un caso de uso"], a: 1 },
-    { q: "¿Qué representa un 'Actor' en un Diagrama de Casos de Uso?", o: ["Únicamente un empleado de la organización", "Cualquier entidad externa (persona o sistema) que interactúa con el software", "Una clase en el código fuente", "El servidor donde reside la aplicación"], a: 1 },
-    { q: "¿Qué técnica de elicitación requiere observar al usuario directamente en su entorno de trabajo real?", o: ["Encuestas", "Observación directa", "Lluvia de ideas", "Prototipado"], a: 1 },
-    { q: "¿Qué estándar internacional se utiliza comúnmente para la Especificación de Requisitos de Software (ERS)?", o: ["ISO 9001", "IEEE 830", "ISO 27001", "IEEE 754"], a: 1 },
-
-    // --- DIAGRAMAS DE CLASES Y POO ---
-    { q: "En un Diagrama de Clases UML, ¿qué símbolo representa la visibilidad PRIVADA?", o: ["+", "-", "#", "~"], a: 1 },
-    { q: "En un Diagrama de Clases UML, ¿qué símbolo representa la visibilidad PÚBLICA?", o: ["-", "#", "+", "*"], a: 2 },
-    { q: "¿Qué pilar de la POO oculta la complejidad interna exponiendo datos solo mediante métodos especificos?", o: ["Herencia", "Encapsulamiento", "Polimorfismo", "Abstracción"], a: 1 },
-    { q: "¿Qué pilar de la POO permite a una clase hija reutilizar atributos y métodos de una clase padre?", o: ["Herencia", "Polimorfismo", "Encapsulamiento", "Instanciación"], a: 0 },
-    { q: "¿Cuál es la diferencia conceptual entre Agregación y Composición en UML?", o: ["Son términos idénticos", "En Composición la clase hija no existe sin la clase padre; en Agregación sí puede existir independientemente", "Agregación es privada y Composición es pública", "La composición solo aplica a bases de datos"], a: 1 },
-    { q: "En Programación Orientada a Objetos, ¿qué es una 'Instancia'?", o: ["La plantilla estructural de la clase", "Un objeto concreto creado a partir de una clase", "Un archivo de texto plano", "Una variable exclusivamente numérica"], a: 1 },
-    { q: "En un Diagrama de Clases, ¿qué indica la multiplicidad '1..*'?", o: ["De cero a uno", "Exactamente uno", "De uno a muchos", "De cero a muchos"], a: 2 },
-    { q: "En UML, ¿qué símbolo representa la visibilidad PROTEGIDA?", o: ["#", "+", "-", "~"], a: 0 },
-
-    // --- BASES DE DATOS RELACIONALES ---
-    { q: "En bases de datos relacionales, ¿cuál es el propósito de la Clave Primaria (Primary Key)?", o: ["Permitir registros duplicados", "Identificar de forma única cada registro en una tabla", "Encriptar la base de datos", "Almacenar datos de tipo texto largo"], a: 1 },
-    { q: "¿Qué función cumple la Clave Foránea (Foreign Key) en un modelo relacional?", o: ["Identificar de forma única la fila actual", "Vincular una tabla con la clave primaria de otra para garantizar la integridad referencial", "Acelerar la velocidad del procesador", "Sustituir la necesidad de consultas SQL"], a: 1 },
-    { q: "Para cumplir con la Primera Forma Normal (1FN), los valores almacenados en cada columna deben ser:", o: ["Atómicos (indivisibles)", "Claves foráneas obligatorias", "Formatos JSON", "Nulos"], a: 0 },
-    { q: "¿Cómo se resuelve una relación de Muchos a Muchos (N:M) en la fase de modelo relacional?", o: ["Se elimina una de las entidades", "Se crea una tabla intermedia que almacena las claves primarias de ambas tablas como FKs", "Se fusionan las tablas en una sola", "Se convierte en una relación 1:1"], a: 1 },
-    { q: "¿A qué categoría del lenguaje SQL pertenecen los comandos CREATE, ALTER y DROP?", o: ["DDL (Data Definition Language)", "DML (Data Manipulation Language)", "DCL (Data Control Language)", "TCL (Transaction Control Language)"], a: 0 },
-    { q: "¿A qué categoría del lenguaje SQL pertenecen los comandos SELECT, INSERT, UPDATE y DELETE?", o: ["DDL (Data Definition Language)", "DML (Data Manipulation Language)", "DCL (Data Control Language)", "TCL (Transaction Control Language)"], a: 1 }
-];
-
-// --- LÓGICA DEL MINIJUEGO (SALA DE PELIGRO) ---
-
-const levels = [
-    { n: "CENTINELA MK-I", hp: 300, dmg: [20, 35] },
-    { n: "MASTER MOLD", hp: 500, dmg: [35, 50] },
-    { n: "OMEGA SENTINEL", hp: 700, dmg: [45, 65] },
-    { n: "NIMROD", hp: 1000, dmg: [60, 90] }
-];
-
-const MAX_HP = 300;
-let p = { hp: MAX_HP, def: false, combo: 0 };
-let lvl = 0; let boss = null; let turn = true; let askedQuestions = []; let currentQuestion = null;
-
-function updateUI() {
-    document.getElementById('p-hp').style.width = `${Math.max(0, p.hp/MAX_HP)*100}%`;
-    document.getElementById('e-hp').style.width = `${Math.max(0, boss.hp/boss.mhp)*100}%`;
-    document.getElementById('combo-txt').innerText = p.combo > 1 ? `COMBO x${p.combo}` : `NIVEL ${lvl + 1}`;
-}
-
-function setBtns(active) { document.querySelectorAll('.btn').forEach(b => b.disabled = !active); }
-
-function cameraFx(type) {
-    const c = document.getElementById('cam');
-    c.classList.add(type);
-    setTimeout(() => c.classList.remove(type), type === 'shake' ? 400 : 800);
-}
-
-function createComicText(text, targetId) {
-    const el = document.getElementById(targetId);
-    const rect = el.getBoundingClientRect();
-    const txt = document.createElement('div');
-    txt.className = 'comic-text';
-    txt.innerText = text;
-    txt.style.left = `${rect.left + rect.width/2 - 60}px`;
-    txt.style.top = `${rect.top + rect.height/2 - 60}px`;
-    document.body.appendChild(txt);
-    setTimeout(() => txt.remove(), 600);
-}
-
-function initLevel() {
-    if(lvl >= levels.length) {
-        alert("¡SALA DE PELIGRO COMPLETADA CON ÉXITO ABSOLUTO!");
-        location.reload(); return;
+// ==========================================
+// 1. BASE DE DATOS DE VILLANOS (Niveles)
+// ==========================================
+const nivelesGame = [
+    {
+        nivel: 1,
+        nombre: "CENTINELA MK-I",
+        hpMaximo: 100,
+        colorUi: "#ff007f", // Magenta
+        svg: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 680" preserveAspectRatio="xMidYMax meet">
+            <defs>
+                <linearGradient id="sentinelArmor" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#7a00cc"/><stop offset="50%" stop-color="#4d0080"/><stop offset="100%" stop-color="#2a0044"/>
+                </linearGradient>
+                <linearGradient id="sentinelMag" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ff1493"/><stop offset="100%" stop-color="#99004d"/>
+                </linearGradient>
+            </defs>
+            <g class="boss-realistic">
+                <!-- Piernas Y Pies -->
+                <path d="M 170 560 L 130 670 L 210 670 L 220 560 Z" fill="url(#sentinelArmor)"/>
+                <path d="M 280 560 L 320 670 L 240 670 L 230 560 Z" fill="url(#sentinelArmor)"/>
+                <path d="M 130 670 L 110 680 L 210 680 L 210 670 Z" fill="#222"/>
+                <path d="M 320 670 L 340 680 L 240 680 L 240 670 Z" fill="#222"/>
+                <path d="M 140 480 L 310 480 L 290 570 L 160 570 Z" fill="url(#sentinelMag)"/>
+                <path d="M 200 480 L 250 480 L 240 550 L 210 550 Z" fill="#111"/>
+                <!-- Torso -->
+                <path d="M 90 280 L 360 280 L 330 480 L 120 480 Z" fill="url(#sentinelArmor)"/>
+                <circle cx="90" cy="280" r="65" fill="url(#sentinelMag)"/>
+                <circle cx="360" cy="280" r="65" fill="url(#sentinelMag)"/>
+                <circle cx="90" cy="280" r="45" fill="url(#sentinelArmor)"/>
+                <circle cx="360" cy="280" r="45" fill="url(#sentinelArmor)"/>
+                <path d="M 140 300 L 310 300 L 280 410 L 170 410 Z" fill="url(#sentinelMag)"/>
+                <circle cx="225" cy="355" r="32" fill="var(--x-yellow)" stroke="#111" stroke-width="4"/>
+                <circle cx="225" cy="355" r="15" fill="#fff" opacity="0.8"/>
+                <rect x="185" y="220" width="80" height="60" fill="#151515" rx="5"/>
+                <!-- Cabeza -->
+                <path d="M 165 70 L 285 70 L 310 220 L 140 220 Z" fill="url(#sentinelArmor)"/>
+                <path d="M 165 70 L 145 20 L 195 70 Z" fill="url(#sentinelMag)"/>
+                <path d="M 285 70 L 305 20 L 255 70 Z" fill="url(#sentinelMag)"/>
+                <path d="M 185 110 L 265 110 L 255 205 L 195 205 Z" fill="url(#sentinelMag)"/>
+                <polygon points="195,135 225,142 210,152" fill="var(--x-yellow)" filter="drop-shadow(0 0 8px #ffcc00)"/>
+                <polygon points="255,135 225,142 240,152" fill="var(--x-yellow)" filter="drop-shadow(0 0 8px #ffcc00)"/>
+            </g>
+        </svg>`
+    },
+    {
+        nivel: 2,
+        nombre: "DIENTES DE SABLE",
+        hpMaximo: 150,
+        colorUi: "#ff6600", // Naranja
+        svg: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 680" preserveAspectRatio="xMidYMax meet">
+            <g class="boss-realistic" transform="scale(0.95) translate(10, 30)">
+                <path d="M 180 500 L 150 680 L 220 680 L 230 500 Z" fill="#4a2e15"/>
+                <path d="M 270 500 L 300 680 L 230 680 L 220 500 Z" fill="#4a2e15"/>
+                <path d="M 130 250 L 320 250 L 280 500 L 170 500 Z" fill="#e65c00"/>
+                <path d="M 190 250 L 260 250 L 240 500 L 210 500 Z" fill="#4a2e15"/>
+                <path d="M 100 230 Q 225 320 350 230 Q 300 150 225 180 Q 150 150 100 230 Z" fill="#f2e3c6"/>
+                <path d="M 130 250 L 50 400 L 100 420 Z" fill="#e65c00"/>
+                <path d="M 320 250 L 400 400 L 350 420 Z" fill="#e65c00"/>
+                <path d="M 30 400 L 10 480 M 50 410 L 40 490 M 70 420 L 70 500" stroke="#ddd" stroke-width="6" stroke-linecap="round"/>
+                <path d="M 420 400 L 440 480 M 400 410 L 410 490 M 380 420 L 380 500" stroke="#ddd" stroke-width="6" stroke-linecap="round"/>
+                <circle cx="225" cy="140" r="45" fill="#f0c0a0"/>
+                <polygon points="205,130 215,135 205,140" fill="#000"/>
+                <polygon points="245,130 235,135 245,140" fill="#000"/>
+                <path d="M 210 160 Q 225 150 240 160" stroke="#000" stroke-width="4" fill="none"/>
+            </g>
+        </svg>`
+    },
+    {
+        nivel: 3,
+        nombre: "MAGNETO",
+        hpMaximo: 250,
+        colorUi: "#cc0000", // Rojo oscuro
+        svg: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 680" preserveAspectRatio="xMidYMax meet">
+            <g class="boss-realistic" style="animation: breatheBoss 4s ease-in-out infinite alternate;">
+                <path d="M 150 150 Q 50 400 100 650 L 350 650 Q 400 400 300 150 Z" fill="#660099"/>
+                <path d="M 190 450 L 170 600 L 210 600 L 220 450 Z" fill="#cc0000"/>
+                <path d="M 260 450 L 280 600 L 240 600 L 230 450 Z" fill="#cc0000"/>
+                <path d="M 150 220 L 300 220 L 270 450 L 180 450 Z" fill="#cc0000"/>
+                <path d="M 180 220 L 270 220 L 250 450 L 200 450 Z" fill="#800000"/>
+                <path d="M 150 250 L 50 150 L 70 130 Z" fill="#cc0000"/>
+                <path d="M 300 250 L 400 150 L 380 130 Z" fill="#cc0000"/>
+                <circle cx="50" cy="130" r="15" fill="#660099"/>
+                <circle cx="400" cy="130" r="15" fill="#660099"/>
+                <path d="M 175 180 L 175 100 Q 225 50 275 100 L 275 180 Q 225 150 175 180 Z" fill="#cc0000"/>
+                <path d="M 190 100 Q 225 80 260 100 L 250 150 Q 225 130 200 150 Z" fill="#660099"/>
+                <polygon points="195,160 255,160 225,190" fill="#f0c0a0"/>
+            </g>
+        </svg>`
     }
-    boss = JSON.parse(JSON.stringify(levels[lvl])); boss.mhp = boss.hp;
-    document.getElementById('e-name').innerText = boss.n;
-    p.hp = MAX_HP; p.combo = 0; turn = true;
-    updateUI(); setBtns(true);
+];
+
+// ==========================================
+// 2. BASE DE DATOS DE PREGUNTAS (Licenciamiento de Software)
+// ==========================================
+const dbPreguntas = {
+    1: [ // Nivel 1: Conceptos Básicos
+        { q: "¿Qué tipo de licencia permite ver, modificar y distribuir libremente el código fuente?", opts: ["Freeware", "Shareware", "Open Source", "Propietario"], ans: 2 },
+        { q: "¿Qué significan las siglas EULA en el licenciamiento?", opts: ["End-User License Agreement", "Enterprise Unified License API", "External User Legal Action", "Electronic Usage License App"], ans: 0 },
+        { q: "En el software 'Freeware' (gratuito), ¿tienes derecho legal a modificar su código fuente?", opts: ["Sí, siempre", "No, normalmente es código cerrado", "Solo si pagas un extra", "Sí, pero no puedes venderlo"], ans: 1 }
+    ],
+    2: [ // Nivel 2: Licencias Específicas
+        { q: "¿Cuál de estas es una licencia de tipo 'Copyleft' estricta?", opts: ["Licencia MIT", "Apache 2.0", "GNU GPL", "BSD de 2 cláusulas"], ans: 2 },
+        { q: "Bajo la licencia MIT, ¿qué condición principal es obligatoria al distribuir el software?", opts: ["Abrir tu propio código", "Pagar regalías", "Incluir el aviso de copyright y la licencia original", "Prohibir su uso comercial"], ans: 2 },
+        { q: "¿Qué modelo de licenciamiento y distribución ofrece el software alojado en la nube bajo suscripción?", opts: ["SaaS (Software as a Service)", "Licencia Perpetua", "Copyleft", "FOSS"], ans: 0 }
+    ],
+    3: [ // Nivel 3: Casos Avanzados y Compatibilidad
+        { q: "¿Qué sucede si integras directamente una librería con licencia GPL en tu proyecto cerrado?", opts: ["Nada, es legal", "Debes pagar al creador", "Tu proyecto entero está obligado a usar la licencia GPL", "Solo debes citar al autor en el 'Acerca de'"], ans: 2 },
+        { q: "A diferencia de la MIT, ¿qué protección legal clave incluye explícitamente la licencia Apache 2.0?", opts: ["Prohibición de uso militar", "Concesión de derechos de patentes", "Obligación de cambiar el nombre", "Protección contra ingeniería inversa"], ans: 1 },
+        { q: "¿Qué variante de las licencias Creative Commons prohíbe explícitamente el uso comercial?", opts: ["CC BY", "CC BY-SA", "CC BY-NC", "CC0 (Dominio Público)"], ans: 2 }
+    ]
+};
+
+// ==========================================
+// 3. VARIABLES DE ESTADO Y REFERENCIAS
+// ==========================================
+let nivelActual = 1;
+let pMaxHp = 100;
+let pCurHp = 100;
+let eMaxHp = 100;
+let eCurHp = 100;
+
+const p1El = document.getElementById('p1');
+const p2El = document.getElementById('p2'); 
+const eHpBg = document.getElementById('e-hp-bg');
+const eHpFill = document.getElementById('e-hp');
+const pHpBg = document.getElementById('p-hp-bg');
+const pHpFill = document.getElementById('p-hp');
+const eNameText = document.getElementById('e-name');
+const comboTxt = document.getElementById('combo-txt');
+const announcer = document.getElementById('fight-announcer');
+const modal = document.getElementById('modal');
+const btnAtk = document.getElementById('btn-atk');
+const btnDef = document.getElementById('btn-def');
+const btnUlt = document.getElementById('btn-ult');
+
+// ==========================================
+// 4. LÓGICA PRINCIPAL (Carga y Combate)
+// ==========================================
+
+document.getElementById('start-btn').addEventListener('click', () => {
+    document.getElementById('intro-screen').style.opacity = '0';
+    setTimeout(() => {
+        document.getElementById('intro-screen').style.display = 'none';
+        iniciarNivel(nivelActual);
+    }, 300);
+});
+
+function iniciarNivel(nivel) {
+    const dataNivel = nivelesGame[nivel - 1]; 
+    
+    eMaxHp = dataNivel.hpMaximo;
+    eCurHp = dataNivel.hpMaximo;
+    pCurHp = pMaxHp;
+    updateHP('p');
+    
+    eNameText.innerText = dataNivel.nombre;
+    eNameText.style.color = dataNivel.colorUi;
+    comboTxt.innerText = `NIVEL ${nivel}`;
+    p2El.innerHTML = dataNivel.svg; 
+    updateHP('e');
+
+    announcer.innerText = `NIVEL ${nivel}: ¡FIGHT!`;
+    announcer.classList.remove('hidden');
+    announcer.classList.add('fight-pop');
+    
+    setTimeout(() => {
+        announcer.classList.remove('fight-pop');
+        announcer.classList.add('hidden');
+        habilitarBotones(true);
+    }, 1500);
 }
 
-function action(type) {
-    if(!turn) return;
-    turn = false; setBtns(false);
-    
-    if(type === 'def') {
-        p.def = true; p.combo = 0; updateUI();
-        setTimeout(bossTurn, 500);
-    } 
-    else if (type === 'atk') {
-        p.def = false;
-        const p1 = document.getElementById('p1');
-        p1.classList.add('atk-slash');
+function updateHP(target) {
+    if (target === 'e') {
+        const pct = Math.max(0, (eCurHp / eMaxHp) * 100);
+        eHpFill.style.width = pct + '%';
+        setTimeout(() => eHpBg.style.width = pct + '%', 200);
+    } else {
+        const pct = Math.max(0, (pCurHp / pMaxHp) * 100);
+        pHpFill.style.width = pct + '%';
+        setTimeout(() => pHpBg.style.width = pct + '%', 200);
+    }
+}
+
+function habilitarBotones(estado) {
+    btnAtk.disabled = !estado;
+    btnUlt.disabled = !estado;
+}
+
+function action(tipo) {
+    if (tipo === 'atk') {
+        habilitarBotones(false);
+        p1El.classList.add('atk-slash');
+        document.getElementById('cam').classList.add('zoom-in');
         
         setTimeout(() => {
-            cameraFx('shake');
-            createComicText("¡SLASH!", 'p2');
+            p2El.classList.add('hit');
+            document.getElementById('cam').classList.add('shake');
             
-            let dmg = 25 + (p.combo * 6);
-            boss.hp -= dmg; p.combo++;
-            
-            document.getElementById('p2').classList.add('hit');
-            updateUI();
+            eCurHp -= Math.floor(Math.random() * 10) + 10;
+            updateHP('e');
+            verificarVictoria();
 
             setTimeout(() => {
-                p1.classList.remove('atk-slash');
-                document.getElementById('p2').classList.remove('hit');
-                setTimeout(checkState, 400);
+                p1El.classList.remove('atk-slash');
+                p2El.classList.remove('hit');
+                document.getElementById('cam').classList.remove('shake', 'zoom-in');
+                
+                if(eCurHp > 0) contraataqueJefe();
             }, 400);
-        }, 120);
+        }, 100);
     }
 }
 
-function bossTurn() {
-    cameraFx('shake');
-    createComicText("¡KRAK!", 'p1');
-    
-    let d = Math.floor(Math.random() * (boss.dmg[1] - boss.dmg[0])) + boss.dmg[0];
-    if(p.def) d = Math.floor(d * 0.2); 
-    
-    p.hp -= d;
-    document.getElementById('p1').classList.add('hit');
-    updateUI();
-
+function contraataqueJefe() {
     setTimeout(() => {
-        document.getElementById('p1').classList.remove('hit');
-        setTimeout(() => { turn = true; checkState(); }, 400);
-    }, 300);
+        p1El.classList.add('hit');
+        document.getElementById('cam').classList.add('shake');
+        
+        const danioJefe = (Math.floor(Math.random() * 10) + 5) * nivelActual;
+        pCurHp -= danioJefe;
+        updateHP('p');
+
+        setTimeout(() => {
+            p1El.classList.remove('hit');
+            document.getElementById('cam').classList.remove('shake');
+            
+            if(pCurHp <= 0) {
+                alert("¡HAS SIDO DERROTADO! Recarga la página para intentarlo de nuevo.");
+            } else {
+                habilitarBotones(true);
+            }
+        }, 300);
+    }, 500);
 }
 
-function checkState() {
-    if(boss.hp <= 0) {
-        setTimeout(() => { lvl++; initLevel(); }, 1000);
-    } else if (p.hp <= 0) {
-        alert("SISTEMA CRÍTICO. HAS SIDO DERROTADO.");
-        location.reload();
-    } else {
-        if(!turn) setTimeout(bossTurn, 500);
-        else setBtns(true);
-    }
-}
-
+// ==========================================
+// 5. SISTEMA CEREBRO (Trivia de Licencias)
+// ==========================================
 function openTrivia() {
-    if(!turn) return;
+    const banco = dbPreguntas[nivelActual] || dbPreguntas[1]; 
+    const randObj = banco[Math.floor(Math.random() * banco.length)];
     
-    let pDisp = bancoDePreguntas.filter(pq => !askedQuestions.includes(pq.q));
-    if(pDisp.length === 0) {
-        askedQuestions = []; pDisp = bancoDePreguntas;
-    }
-
-    const rIdx = Math.floor(Math.random() * pDisp.length);
-    currentQuestion = pDisp[rIdx];
-    askedQuestions.push(currentQuestion.q);
-
-    document.getElementById('m-q').innerText = currentQuestion.q;
-    const b = document.getElementById('m-opts'); b.innerHTML = '';
+    document.getElementById('m-q').innerText = randObj.q;
+    const optsDiv = document.getElementById('m-opts');
+    optsDiv.innerHTML = '';
     
-    currentQuestion.o.forEach((op, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt'; btn.innerText = op;
-        btn.onclick = () => solveTrivia(i);
-        b.appendChild(btn);
+    randObj.opts.forEach((opt, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'opt';
+        btn.innerText = opt;
+        btn.onclick = () => resolverTrivia(idx === randObj.ans);
+        optsDiv.appendChild(btn);
     });
     
-    document.getElementById('modal').classList.add('active');
+    modal.classList.add('active');
 }
 
-function solveTrivia(sel) {
-    document.getElementById('modal').classList.remove('active');
-    turn = false; setBtns(false); p.def = false;
+function resolverTrivia(correcto) {
+    modal.classList.remove('active');
+    if (correcto) {
+        document.getElementById('cam').classList.add('zoom-in');
+        p2El.classList.add('hit');
+        
+        const comicText = document.createElement('div');
+        comicText.className = 'comic-text';
+        comicText.innerText = '¡CRÍTICO!';
+        comicText.style.top = '30%';
+        comicText.style.right = '20%';
+        document.getElementById('cam').appendChild(comicText);
+        
+        eCurHp -= 50 * nivelActual; 
+        updateHP('e');
+        
+        setTimeout(() => {
+            comicText.remove();
+            p2El.classList.remove('hit');
+            document.getElementById('cam').classList.remove('zoom-in');
+            verificarVictoria();
+            if(eCurHp > 0) habilitarBotones(true);
+        }, 1000);
 
-    if(sel === currentQuestion.a) {
-        cameraFx('zoom-in');
-        document.body.style.filter = "saturate(3) contrast(1.4)";
-        
-        setTimeout(() => {
-            document.getElementById('p1').classList.add('atk-slash');
-            cameraFx('shake');
-            createComicText("¡MEGA TAJO!", 'p2');
-            
-            boss.hp -= 160; p.combo += 3;
-            document.getElementById('p2').classList.add('hit');
-            updateUI();
-            
-            setTimeout(() => {
-                document.body.style.filter = "none";
-                document.getElementById('p1').classList.remove('atk-slash');
-                document.getElementById('p2').classList.remove('hit');
-                setTimeout(checkState, 600);
-            }, 500);
-        }, 400);
     } else {
-        p.hp -= 40; p.combo = 0;
-        cameraFx('shake'); 
-        createComicText("¡ERROR!", 'p1');
-        document.getElementById('p1').classList.add('hit');
-        updateUI();
-        
-        setTimeout(() => {
-            document.getElementById('p1').classList.remove('hit');
-            setTimeout(bossTurn, 500);
-        }, 500);
+        alert("¡Cerebro rechaza la respuesta! Recibes daño por fallo de licencia.");
+        pCurHp -= 20 * nivelActual;
+        updateHP('p');
+        if(pCurHp <= 0) alert("¡HAS SIDO DERROTADO! Recarga la página.");
     }
 }
 
-initLevel();
+// ==========================================
+// 6. GESTIÓN DE PROGRESIÓN (Niveles)
+// ==========================================
+function verificarVictoria() {
+    if (eCurHp <= 0) {
+        habilitarBotones(false);
+        eCurHp = 0;
+        
+        setTimeout(() => {
+            if (nivelActual < nivelesGame.length) {
+                nivelActual++;
+                alert(`¡VILLANO DERROTADO! Preparando el Nivel ${nivelActual}...`);
+                iniciarNivel(nivelActual);
+            } else {
+                announcer.innerText = `¡SALA DE PELIGRO SUPERADA!`;
+                announcer.style.fontSize = '3rem';
+                announcer.classList.remove('hidden');
+                announcer.classList.add('fight-pop');
+                p2El.style.display = 'none'; 
+            }
+        }, 1000);
+    }
+}
