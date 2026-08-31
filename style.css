@@ -1,296 +1,139 @@
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Teko:wght@500;700&display=swap');
-
-/* =========================================
-   1. RESET Y VARIABLES GLOBALES
-========================================= */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    user-select: none;
-}
-
 :root {
-    --p1-color: #00ff55; /* Verde tóxico/héroe */
-    --p2-color: #ff003c; /* Rojo sangre/villano */
-    --hud-bg: #110817;   /* Fondo oscuro de las tarjetas */
-    --hud-border: #4a2b5e; 
+    --x-blue: #0033cc; --x-yellow: #ffcc00; --x-red: #ff0000;
+    --s-purple: #4a0e4e; --s-magenta: #ff007f;
+    --hero-skin: #b30000; --hero-suit: #111111;
+    --font-ui: 'Teko', sans-serif; --font-comic: 'Bangers', cursive; --font-real: 'Cinzel', serif;
 }
 
-/* =========================================
-   2. ESCENARIO "NINGÚN LUGAR" (ATMÓSFERA)
-========================================= */
+* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
 body {
-    font-family: 'Teko', sans-serif;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    /* Cielo nocturno espeluznante (Morado a Negro) */
-    background: radial-gradient(circle at 50% 30%, #3b174d 0%, #17051f 50%, #05010a 100%);
-    
-    /* ¿QUIERES LA CASA REAL DE LA CARICATURA? 
-      Borra los "/*" de la línea de abajo y pon el link de tu imagen:
-    */
-    /* background: url('PON_AQUI_LA_RUTA_DE_TU_IMAGEN_DE_FONDO.jpg') center/cover no-repeat !important; */
+    background-color: #080808; color: #fff; font-family: var(--font-ui);
+    overflow: hidden; width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
 }
 
-/* La Luna Gigante y Tétrica */
-body::before {
-    content: "";
-    position: absolute;
-    top: 10%;
-    left: 15%;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 40%, #fffde6 0%, #d8cca6 40%, #7c684d 100%);
-    box-shadow: 0 0 80px 10px rgba(255, 240, 180, 0.2), inset -20px -20px 40px rgba(0,0,0,0.8);
-    z-index: 1;
-    pointer-events: none;
+/* FONDO DINÁMICO DE SALA DE PELIGRO */
+.comic-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+    background: linear-gradient(135deg, #110022 0%, #000000 50%, #220000 100%);
+    box-shadow: inset 0 0 200px rgba(0,0,0,0.9);
+}
+.grid-lines {
+    position: absolute; width: 100%; height: 100%; z-index: 2; pointer-events: none;
+    background-image: linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
 }
 
-/* El Suelo Árido y Curvo (Perfecto para PC y Móvil) */
-body::after {
-    content: "";
-    position: absolute;
-    bottom: -30px;
-    left: -10vw;
-    width: 120vw;
-    height: 22vh; 
-    min-height: 150px;
-    max-height: 250px;
-    border-radius: 50% 50% 0 0;
-    background: radial-gradient(ellipse at top, #261622 0%, #12090e 60%, #000000 100%);
-    border-top: 4px solid #3d2638;
-    box-shadow: 0 -20px 40px rgba(0,0,0,0.9);
-    z-index: 2;
-    pointer-events: none;
+.camera { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5; display: flex; flex-direction: column; }
+.shake { animation: camShake 0.4s ease-in-out; }
+.zoom-in { transform: scale(1.12) translateY(5%); transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1); }
+@keyframes camShake {
+    0%, 100% { transform: translate(0,0); }
+    20% { transform: translate(-18px, 12px); }
+    40% { transform: translate(18px, -18px); }
+    60% { transform: translate(-12px, 18px); }
+    80% { transform: translate(12px, -12px); }
 }
 
-/* =========================================
-   3. CÁMARA (CONTENEDOR PRINCIPAL)
-========================================= */
-#cam {
-    width: 100%;
-    height: 100%;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px 30px;
-    position: relative;
-    z-index: 10;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-#cam.shake { animation: cameraShake 0.4s ease-in-out; }
-
-/* =========================================
-   4. HUD: BARRAS DE VIDA ESTILO ARCADE
-========================================= */
+/* HUD CINEMATOGRÁFICO */
 .hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    z-index: 20;
-    width: 100%;
-    padding-top: 10px;
+    position: relative; z-index: 20; padding: 15px 40px; display: flex; justify-content: space-between;
+    background: linear-gradient(180deg, rgba(0,0,0,0.95), transparent); border-bottom: 4px solid var(--x-yellow);
+}
+.plate { width: 40%; }
+.plate.enemy { text-align: right; }
+.name { font-family: var(--font-real); font-size: 2.2rem; letter-spacing: 2px; text-shadow: 2px 2px 0 #000, 0 0 10px rgba(255,255,255,0.2); }
+.name.hero { color: var(--x-yellow); }
+.name.boss { color: var(--s-magenta); }
+.level-badge { position: absolute; left: 50%; top: 15px; transform: translateX(-50%); font-family: var(--font-comic); font-size: 3.2rem; color: var(--x-red); text-shadow: 2px 2px 0 #fff, 4px 4px 0 #000; }
+
+.hp-box { width: 100%; height: 35px; background: #1a1a1a; border: 3px solid #fff; position: relative; box-shadow: 4px 4px 0 #000; transform: skewX(-15deg); }
+.hp-bg { position: absolute; height: 100%; width: 100%; background: rgba(255,255,255,0.4); transition: width 0.6s ease-out; }
+.hp-fill { position: absolute; height: 100%; width: 100%; transition: width 0.2s; }
+.hp-fill.hero { background: linear-gradient(90deg, #007700, #00ff00); }
+.hp-fill.boss { background: linear-gradient(90deg, #990000, #ff2222); right: 0; }
+.plate.enemy .hp-bg { right: 0; }
+
+/* ARENA Y PERSONAJES */
+.arena { flex: 1; position: relative; display: flex; align-items: flex-end; padding-bottom: 50px; }
+
+.fighter { position: absolute; bottom: 50px; z-index: 10; transition: all 0.2s; }
+.fighter.p1 { left: 12%; width: 300px; height: 420px; transform-origin: bottom center; }
+.fighter.p2 { right: 8%; width: 450px; height: 500px; transform-origin: bottom center; }
+
+/* Animaciones de Respiración Realista */
+.idle .hero-realistic { animation: breatheHero 2.5s ease-in-out infinite alternate; transform-origin: bottom center; }
+.idle .boss-realistic { animation: breatheBoss 3s ease-in-out infinite alternate; transform-origin: bottom center; }
+
+@keyframes breatheHero { 
+    0% { transform: scaleY(1) translateY(0); filter: drop-shadow(0 15px 10px rgba(0,0,0,0.8)); } 
+    100% { transform: scaleY(1.015) translateY(-4px); filter: drop-shadow(0 20px 15px rgba(0,0,0,0.9)); } 
+}
+@keyframes breatheBoss { 
+    0% { transform: translateY(0) scale(1); filter: drop-shadow(0 20px 15px rgba(0,0,0,0.9)); } 
+    100% { transform: translateY(-10px) scale(1.005); filter: drop-shadow(0 30px 20px rgba(204,0,102,0.3)); } 
 }
 
-.fighter-card {
-    background: var(--hud-bg);
-    border: 3px solid #22122b;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.8), inset 0 0 15px rgba(74, 43, 94, 0.5);
-    padding: 10px 15px;
-    width: 46%;
-    border-radius: 4px;
-    transform: skewX(-12deg); /* Inclinación agresiva de juego de pelea */
+/* Animación de Corte Dinámico Realista */
+.slash-fx {
+    position: absolute; left: 140px; top: 80px; width: 180px; height: 180px;
+    border-right: 15px solid rgba(255,255,255,0.9); border-bottom: 15px solid rgba(0,255,255,0.8);
+    border-radius: 50%; filter: drop-shadow(0 0 25px #00ffff) drop-shadow(0 0 10px #ffffff);
+    opacity: 0; pointer-events: none; z-index: 50; transform-origin: center;
+}
+.atk-slash .slash-fx { animation: dynamicSlash 0.35s cubic-bezier(0.1, 1, 0.2, 1); }
+.atk-slash .hero-arm-front { transform: rotate(70deg) translate(40px, 20px); transition: transform 0.08s ease-in-out; }
+
+@keyframes dynamicSlash { 
+    0% { transform: scale(0.3) rotate(-80deg) translate(-20px, -60px); opacity: 1; } 
+    50% { transform: scale(2.2) rotate(10deg) translate(80px, 30px); opacity: 0.9; }
+    100% { transform: scale(3.5) rotate(50deg) translate(160px, 60px); opacity: 0; } 
 }
 
-/* Para que el texto no se incline con la tarjeta */
-.fighter-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 5px;
-    transform: skewX(12deg); 
-}
+/* Daño y Cómics */
+.hit { animation: flashHit 0.35s steps(2); }
+@keyframes flashHit { 0%, 100% { filter: brightness(1) drop-shadow(10px 10px 0px rgba(0,0,0,0.8)); } 50% { filter: brightness(3) sepia(1) hue-rotate(-50deg) saturate(5); transform: translateX(-25px); } }
 
-.fighter-name {
-    font-family: 'Bangers', cursive;
-    font-size: 2rem;
-    color: #fff;
-    text-shadow: 3px 3px 0px #000;
-    letter-spacing: 2px;
+.comic-text {
+    position: absolute; font-family: var(--font-comic); font-size: 5.5rem;
+    color: var(--x-yellow); -webkit-text-stroke: 3px #000; text-shadow: 6px 6px 0 var(--x-red);
+    z-index: 60; pointer-events: none; animation: popText 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
+@keyframes popText { 0% { transform: scale(0) rotate(-25deg); opacity: 0; } 60% { transform: scale(1.3) rotate(12deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 0; } }
 
-.hp-text {
-    font-size: 1.5rem;
-    color: #ccc;
-    font-weight: 700;
-    text-shadow: 2px 2px 0px #000;
+/* PANEL DE CONTROL */
+.panel {
+    position: absolute; bottom: 0; width: 100%; z-index: 20; height: 160px; background: #000;
+    border-top: 8px solid var(--x-blue); display: flex; box-shadow: 0 -10px 30px rgba(0,0,0,0.9);
 }
-
-/* Contenedor exterior de la barra (El marco) */
-.hp-bar-outer {
-    width: 100%;
-    height: 28px;
-    background: #0a050d;
-    border: 3px solid #4a2b5e;
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: inset 0 0 10px #000;
-}
-
-/* La vida en sí misma */
-.hp-bar-inner {
-    height: 100%;
-    width: 100%; /* El JS modifica esto (ej. width: 80%) */
-    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    position: relative;
-}
-
-/* Efecto de cristal/brillo sobre la barra */
-.hp-bar-inner::after {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 40%;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
-}
-
-/* Colores específicos de cada jugador */
-#p-hp { 
-    background: linear-gradient(90deg, #00882d, var(--p1-color)); 
-    box-shadow: 0 0 15px var(--p1-color); 
-}
-
-#e-hp { 
-    background: linear-gradient(90deg, #880017, var(--p2-color)); 
-    box-shadow: 0 0 15px var(--p2-color); 
-    margin-left: auto; /* Hace que la barra del enemigo se drene hacia la derecha */
-}
-
-#combo-txt {
-    font-family: 'Bangers', cursive;
-    font-size: 2.5rem;
-    color: #ffde00;
-    position: absolute;
-    top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-shadow: 3px 3px 0px #000, 0 0 20px rgba(255, 222, 0, 0.5);
-}
-
-/* =========================================
-   5. ARENA Y PERSONAJES (LIMPIOS)
-========================================= */
-.arena {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-grow: 1;
-    padding: 0 10%;
-    padding-bottom: 8vh; /* Para que pisen exactamente la curva del suelo */
-    z-index: 10;
-}
-
-.sprite {
-    width: 250px; 
-    height: 300px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: bottom center;
-    filter: drop-shadow(0 20px 15px rgba(0,0,0,0.9)); 
-    transition: transform 0.15s ease, filter 0.15s ease;
-}
-
-/* CERO IMÁGENES DE RELLENO AQUÍ. TU HTML SE ENCARGA. */
-#p1 { }
-#p2 { transform: scaleX(-1); }
-
-/* =========================================
-   6. CONTROLES / BOTONES
-========================================= */
-.controls {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; 
-    gap: 15px;
-    z-index: 20;
-    margin-bottom: 20px;
-}
+.controls { width: 100%; display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 15px; padding: 25px; }
 
 .btn {
-    font-family: 'Bangers', cursive;
-    font-size: 1.6rem;
-    padding: 12px 25px;
-    border: 3px solid #000;
-    border-radius: 4px;
-    cursor: pointer;
-    background: linear-gradient(to bottom, #4a2b5e, #22122b);
-    color: #fff;
-    box-shadow: 4px 4px 0px #000;
-    transform: skewX(-8deg);
-    transition: all 0.1s;
-    letter-spacing: 1px;
+    background: #fff; border: 4px solid #000; font-family: var(--font-comic); font-size: 2.2rem; letter-spacing: 1px;
+    color: #000; cursor: pointer; transition: 0.1s; text-transform: uppercase; border-radius: 8px;
+    box-shadow: 5px 5px 0 var(--x-blue);
 }
+.btn:active:not(:disabled) { transform: translate(5px, 5px); box-shadow: 0px 0px 0 var(--x-blue); }
+.btn:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
 
-.btn:hover { background: linear-gradient(to bottom, #5d3675, #2f193d); }
-.btn-atk { color: var(--p1-color); }
-.btn-trivia { color: var(--p2-color); }
+.btn-atk { background: var(--x-red); color: #fff; box-shadow: 5px 5px 0 #000; }
+.btn-def { background: var(--x-yellow); box-shadow: 5px 5px 0 #000; }
+.btn-ult { background: var(--x-blue); color: var(--x-yellow); box-shadow: 5px 5px 0 #fff; }
 
-.btn:active:not(:disabled) {
-    transform: skewX(-8deg) translate(3px, 3px);
-    box-shadow: 1px 1px 0px #000;
+/* MODAL PREGUNTAS */
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,20,0.95); display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; transition: 0.2s; z-index: 1000;
 }
-.btn:disabled { opacity: 0.4; filter: grayscale(1); cursor: not-allowed; }
+.modal.active { opacity: 1; pointer-events: auto; }
+.m-box { background: var(--x-blue); border: 8px solid var(--x-yellow); padding: 40px; width: 90%; max-width: 850px; box-shadow: 15px 15px 0 #000; max-height: 90vh; overflow-y: auto; }
+.m-title { font-family: var(--font-comic); color: #fff; font-size: 3.2rem; margin-bottom: 10px; text-shadow: 3px 3px 0 #000; }
+.m-q { font-size: 1.8rem; margin-bottom: 25px; font-family: var(--font-ui); background: #000; padding: 15px; border-left: 6px solid var(--x-red); line-height: 1.2; }
+.opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.opt { background: #fff; border: 4px solid #000; padding: 14px; font-family: var(--font-ui); font-size: 1.6rem; font-weight: bold; cursor: pointer; width: 100%; text-align: left; transition: 0.1s; box-shadow: 4px 4px 0 #000; }
+.opt:hover { background: var(--x-yellow); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #000; }
 
-/* =========================================
-   7. ADAPTACIÓN PERFECTA PARA MÓVILES
-========================================= */
-@media (max-width: 768px) {
-    #cam { padding: 10px; }
-    body::before { top: 5%; left: 5%; width: 120px; height: 120px; }
-    
-    /* El HUD se apila sin deformar las barras de vida */
-    .hud { flex-direction: column; align-items: center; gap: 10px; }
-    .fighter-card { width: 100%; padding: 8px 12px; transform: skewX(-8deg); }
-    .fighter-info { transform: skewX(8deg); }
-    .fighter-name { font-size: 1.5rem; }
-    .hp-bar-outer { height: 22px; }
-    
-    #combo-txt { top: 150px; font-size: 1.8rem; }
-
-    /* Los personajes encajan perfectamente en vertical */
-    .sprite { width: 150px; height: 200px; }
-    .arena { padding: 0 2%; padding-bottom: 12vh; }
-    
-    .controls { gap: 10px; margin-bottom: 5px; }
-    .btn { font-size: 1.3rem; padding: 10px; width: 47%; text-align: center; transform: skewX(0); }
-}
-
-/* =========================================
-   8. ANIMACIONES
-========================================= */
-@keyframes cameraShake {
-    0%, 100% { transform: translate(0, 0); }
-    25% { transform: translate(-8px, 8px) rotate(-1deg); }
-    50% { transform: translate(8px, -8px) rotate(1deg); }
-    75% { transform: translate(-4px, -4px); }
-}
-
-.hit {
-    filter: brightness(2) sepia(1) hue-rotate(320deg) saturate(5) drop-shadow(0 0 20px red) !important;
-    transform: translateX(10px);
-}
+svg { display: block; overflow: visible; stroke: #000; stroke-width: 3.5; stroke-linejoin: round; }
