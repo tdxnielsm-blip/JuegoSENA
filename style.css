@@ -1,139 +1,461 @@
 :root {
-    --x-blue: #0033cc; --x-yellow: #ffcc00; --x-red: #ff0000;
-    --s-purple: #4a0e4e; --s-magenta: #ff007f;
-    --hero-skin: #b30000; --hero-suit: #111111;
-    --font-ui: 'Teko', sans-serif; --font-comic: 'Bangers', cursive; --font-real: 'Cinzel', serif;
+    --x-blue: #0044ff;
+    --x-yellow: #ffcc00;
+    --x-red: #ff1a1a;
+    --x-dark: #0a0a0f;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
 
 body {
-    background-color: #080808; color: #fff; font-family: var(--font-ui);
-    overflow: hidden; width: 100vw; height: 100vh;
-    display: flex; flex-direction: column;
+    background-color: var(--x-dark);
+    color: #fff;
+    font-family: 'Teko', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* FONDO DINÁMICO DE SALA DE PELIGRO */
+/* Efectos de Fondo Cómics */
 .comic-bg {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-    background: linear-gradient(135deg, #110022 0%, #000000 50%, #220000 100%);
-    box-shadow: inset 0 0 200px rgba(0,0,0,0.9);
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, #1a1a2e 0%, #050508 100%);
+    z-index: -2;
 }
+
 .grid-lines {
-    position: absolute; width: 100%; height: 100%; z-index: 2; pointer-events: none;
-    background-image: linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(rgba(0, 68, 255, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 68, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    z-index: -1;
 }
 
-.camera { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5; display: flex; flex-direction: column; }
-.shake { animation: camShake 0.4s ease-in-out; }
-.zoom-in { transform: scale(1.12) translateY(5%); transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1); }
-@keyframes camShake {
-    0%, 100% { transform: translate(0,0); }
-    20% { transform: translate(-18px, 12px); }
-    40% { transform: translate(18px, -18px); }
-    60% { transform: translate(-12px, 18px); }
-    80% { transform: translate(12px, -12px); }
+/* Pantalla de Inicio Arcade */
+.sf-intro {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.4s ease;
 }
 
-/* HUD CINEMATOGRÁFICO */
+.sf-bg {
+    position: absolute;
+    width: 100%; height: 100%;
+    display: flex;
+    z-index: 1;
+    opacity: 0.2;
+}
+.sf-bg-blue { flex: 1; background: var(--x-blue); }
+.sf-bg-red { flex: 1; background: var(--x-red); }
+
+.sf-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.sf-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.sf-portrait {
+    width: 140px; height: 180px;
+    border: 4px solid var(--x-yellow);
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+}
+.p1-port { background: linear-gradient(135deg, #262626, #0a0a0a); }
+.p2-port { background: linear-gradient(135deg, #7a00cc, #2a0044); }
+
+.sf-name-box {
+    text-align: center;
+}
+.sf-player-tag {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: var(--x-yellow);
+}
+.sf-name {
+    font-family: 'Bangers', cursive;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.sf-vs-badge {
+    font-family: 'Bangers', cursive;
+    font-size: 4rem;
+    color: var(--x-yellow);
+    text-shadow: 0 0 15px var(--x-yellow);
+    animation: pulseVS 1.5s infinite alternate;
+}
+
+@keyframes pulseVS {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.15); opacity: 1; }
+}
+
+.sf-start-btn {
+    position: relative;
+    z-index: 2;
+    background: var(--x-yellow);
+    border: 4px solid #fff;
+    padding: 15px 40px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #b38f00, 0 10px 20px rgba(0,0,0,0.5);
+    transition: transform 0.1s, background 0.2s;
+}
+.sf-start-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #b38f00;
+}
+.blink {
+    animation: blinkAnim 0.8s infinite;
+}
+@keyframes blinkAnim {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Anunciador de Combate */
+.sf-announcer {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-family: 'Bangers', cursive;
+    font-size: 4rem;
+    color: var(--x-yellow);
+    text-shadow: 4px 4px 0 #000, 0 0 25px var(--x-red);
+    z-index: 500;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.sf-announcer.fight-pop {
+    transform: translate(-50%, -50%) scale(1);
+}
+.hidden { display: none !important; }
+
+/* Cámara y Contenedor de Pelea */
+.camera {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+.camera.shake {
+    animation: cameraShake 0.3s ease;
+}
+@keyframes cameraShake {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-8px, 5px); }
+    40% { transform: translate(8px, -5px); }
+    60% { transform: translate(-5px, -3px); }
+    80% { transform: translate(5px, 3px); }
+    100% { transform: translate(0, 0); }
+}
+.camera.zoom-in {
+    transform: scale(1.05);
+}
+
+/* HUD (Barras de Vida) */
 .hud {
-    position: relative; z-index: 20; padding: 15px 40px; display: flex; justify-content: space-between;
-    background: linear-gradient(180deg, rgba(0,0,0,0.95), transparent); border-bottom: 4px solid var(--x-yellow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
 }
-.plate { width: 40%; }
-.plate.enemy { text-align: right; }
-.name { font-family: var(--font-real); font-size: 2.2rem; letter-spacing: 2px; text-shadow: 2px 2px 0 #000, 0 0 10px rgba(255,255,255,0.2); }
+
+.plate {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 35%;
+}
+.plate.enemy {
+    align-items: flex-end;
+}
+
+.name {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0 #000;
+}
 .name.hero { color: var(--x-yellow); }
-.name.boss { color: var(--s-magenta); }
-.level-badge { position: absolute; left: 50%; top: 15px; transform: translateX(-50%); font-family: var(--font-comic); font-size: 3.2rem; color: var(--x-red); text-shadow: 2px 2px 0 #fff, 4px 4px 0 #000; }
+.name.boss { color: var(--x-red); }
 
-.hp-box { width: 100%; height: 35px; background: #1a1a1a; border: 3px solid #fff; position: relative; box-shadow: 4px 4px 0 #000; transform: skewX(-15deg); }
-.hp-bg { position: absolute; height: 100%; width: 100%; background: rgba(255,255,255,0.4); transition: width 0.6s ease-out; }
-.hp-fill { position: absolute; height: 100%; width: 100%; transition: width 0.2s; }
-.hp-fill.hero { background: linear-gradient(90deg, #007700, #00ff00); }
-.hp-fill.boss { background: linear-gradient(90deg, #990000, #ff2222); right: 0; }
-.plate.enemy .hp-bg { right: 0; }
-
-/* ARENA Y PERSONAJES */
-.arena { flex: 1; position: relative; display: flex; align-items: flex-end; padding-bottom: 50px; }
-
-.fighter { position: absolute; bottom: 50px; z-index: 10; transition: all 0.2s; }
-.fighter.p1 { left: 12%; width: 300px; height: 420px; transform-origin: bottom center; }
-.fighter.p2 { right: 8%; width: 450px; height: 500px; transform-origin: bottom center; }
-
-/* Animaciones de Respiración Realista */
-.idle .hero-realistic { animation: breatheHero 2.5s ease-in-out infinite alternate; transform-origin: bottom center; }
-.idle .boss-realistic { animation: breatheBoss 3s ease-in-out infinite alternate; transform-origin: bottom center; }
-
-@keyframes breatheHero { 
-    0% { transform: scaleY(1) translateY(0); filter: drop-shadow(0 15px 10px rgba(0,0,0,0.8)); } 
-    100% { transform: scaleY(1.015) translateY(-4px); filter: drop-shadow(0 20px 15px rgba(0,0,0,0.9)); } 
-}
-@keyframes breatheBoss { 
-    0% { transform: translateY(0) scale(1); filter: drop-shadow(0 20px 15px rgba(0,0,0,0.9)); } 
-    100% { transform: translateY(-10px) scale(1.005); filter: drop-shadow(0 30px 20px rgba(204,0,102,0.3)); } 
+.hp-box {
+    position: relative;
+    width: 100%;
+    height: 22px;
+    background: #111;
+    border: 3px solid #333;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
 }
 
-/* Animación de Corte Dinámico Realista */
+.hp-bg {
+    position: absolute;
+    top: 0; left: 0; height: 100%;
+    background: #ffcc00;
+    width: 100%;
+    transition: width 0.4s ease-out;
+}
+
+.hp-fill {
+    position: absolute;
+    top: 0; left: 0; height: 100%;
+    width: 100%;
+    transition: width 0.2s ease-out;
+}
+.hp-fill.hero { background: linear-gradient(90deg, #00bbff, var(--x-blue)); }
+.hp-fill.boss { background: linear-gradient(90deg, var(--x-red), #990000); }
+
+.level-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    background: #1a1a2e;
+    border: 2px solid var(--x-yellow);
+    padding: 8px 12px;
+    color: var(--x-yellow);
+    box-shadow: 0 0 10px rgba(255,204,0,0.3);
+}
+
+/* Arena de Batalla */
+.arena {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding-bottom: 40px;
+    position: relative;
+}
+
+.fighter {
+    width: 280px;
+    height: 380px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    transition: transform 0.15s;
+}
+.fighter svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
+}
+
+/* Animaciones de los Luchadores */
+.fighter.idle {
+    animation: idleMotion 3s ease-in-out infinite alternate;
+}
+@keyframes idleMotion {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+}
+
+.fighter.atk-slash {
+    transform: translateX(60px) scale(1.05);
+}
+
+.fighter.hit {
+    filter: brightness(2.5) saturate(0.2) drop-shadow(0 0 20px #fff);
+    transform: translateX(-20px);
+}
+
+/* Efectos de Tajo y Críticos */
 .slash-fx {
-    position: absolute; left: 140px; top: 80px; width: 180px; height: 180px;
-    border-right: 15px solid rgba(255,255,255,0.9); border-bottom: 15px solid rgba(0,255,255,0.8);
-    border-radius: 50%; filter: drop-shadow(0 0 25px #00ffff) drop-shadow(0 0 10px #ffffff);
-    opacity: 0; pointer-events: none; z-index: 50; transform-origin: center;
+    position: absolute;
+    top: 30%;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(0,255,255,0.8) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+    transform: scale(0.5);
 }
-.atk-slash .slash-fx { animation: dynamicSlash 0.35s cubic-bezier(0.1, 1, 0.2, 1); }
-.atk-slash .hero-arm-front { transform: rotate(70deg) translate(40px, 20px); transition: transform 0.08s ease-in-out; }
-
-@keyframes dynamicSlash { 
-    0% { transform: scale(0.3) rotate(-80deg) translate(-20px, -60px); opacity: 1; } 
-    50% { transform: scale(2.2) rotate(10deg) translate(80px, 30px); opacity: 0.9; }
-    100% { transform: scale(3.5) rotate(50deg) translate(160px, 60px); opacity: 0; } 
+.fighter.atk-slash .slash-fx {
+    animation: slashAnim 0.3s forwards;
 }
-
-/* Daño y Cómics */
-.hit { animation: flashHit 0.35s steps(2); }
-@keyframes flashHit { 0%, 100% { filter: brightness(1) drop-shadow(10px 10px 0px rgba(0,0,0,0.8)); } 50% { filter: brightness(3) sepia(1) hue-rotate(-50deg) saturate(5); transform: translateX(-25px); } }
+@keyframes slashAnim {
+    0% { opacity: 1; transform: scale(0.5) rotate(-30deg); }
+    100% { opacity: 0; transform: scale(1.5) rotate(30deg); }
+}
 
 .comic-text {
-    position: absolute; font-family: var(--font-comic); font-size: 5.5rem;
-    color: var(--x-yellow); -webkit-text-stroke: 3px #000; text-shadow: 6px 6px 0 var(--x-red);
-    z-index: 60; pointer-events: none; animation: popText 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    position: absolute;
+    font-family: 'Bangers', cursive;
+    font-size: 3.5rem;
+    color: var(--x-yellow);
+    text-shadow: 3px 3px 0 #000, -2px -2px 0 #000;
+    transform: rotate(-15deg) scale(0);
+    animation: popComic 0.8s forwards;
+    z-index: 30;
 }
-@keyframes popText { 0% { transform: scale(0) rotate(-25deg); opacity: 0; } 60% { transform: scale(1.3) rotate(12deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 0; } }
+@keyframes popComic {
+    0% { transform: rotate(-15deg) scale(0); }
+    50% { transform: rotate(-15deg) scale(1.3); }
+    100% { transform: rotate(-10deg) scale(1); opacity: 0; }
+}
 
-/* PANEL DE CONTROL */
+/* Panel de Controles Inferior */
 .panel {
-    position: absolute; bottom: 0; width: 100%; z-index: 20; height: 160px; background: #000;
-    border-top: 8px solid var(--x-blue); display: flex; box-shadow: 0 -10px 30px rgba(0,0,0,0.9);
+    background: #0d0d14;
+    border-top: 4px solid #222;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
 }
-.controls { width: 100%; display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 15px; padding: 25px; }
+
+.controls {
+    display: flex;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+    justify-content: center;
+}
 
 .btn {
-    background: #fff; border: 4px solid #000; font-family: var(--font-comic); font-size: 2.2rem; letter-spacing: 1px;
-    color: #000; cursor: pointer; transition: 0.1s; text-transform: uppercase; border-radius: 8px;
-    box-shadow: 5px 5px 0 var(--x-blue);
+    flex: 1;
+    padding: 16px;
+    border: none;
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.5);
+    transition: transform 0.1s, filter 0.2s, box-shadow 0.1s;
 }
-.btn:active:not(:disabled) { transform: translate(5px, 5px); box-shadow: 0px 0px 0 var(--x-blue); }
-.btn:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
+.btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.5);
+}
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(0.8);
+}
 
-.btn-atk { background: var(--x-red); color: #fff; box-shadow: 5px 5px 0 #000; }
-.btn-def { background: var(--x-yellow); box-shadow: 5px 5px 0 #000; }
-.btn-ult { background: var(--x-blue); color: var(--x-yellow); box-shadow: 5px 5px 0 #fff; }
+.btn-atk {
+    background: linear-gradient(135deg, #ff1a1a, #990000);
+    border: 2px solid #ff6666;
+}
+.btn-def {
+    background: linear-gradient(135deg, #0044ff, #002288);
+    border: 2px solid #6699ff;
+}
+.btn-ult {
+    background: linear-gradient(135deg, #ffcc00, #b38f00);
+    border: 2px solid #ffff66;
+    color: #000;
+}
 
-/* MODAL PREGUNTAS */
+/* Modal del Sistema Cerebro (Trivia) */
 .modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,20,0.95); display: flex; justify-content: center; align-items: center;
-    opacity: 0; pointer-events: none; transition: 0.2s; z-index: 1000;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
-.modal.active { opacity: 1; pointer-events: auto; }
-.m-box { background: var(--x-blue); border: 8px solid var(--x-yellow); padding: 40px; width: 90%; max-width: 850px; box-shadow: 15px 15px 0 #000; max-height: 90vh; overflow-y: auto; }
-.m-title { font-family: var(--font-comic); color: #fff; font-size: 3.2rem; margin-bottom: 10px; text-shadow: 3px 3px 0 #000; }
-.m-q { font-size: 1.8rem; margin-bottom: 25px; font-family: var(--font-ui); background: #000; padding: 15px; border-left: 6px solid var(--x-red); line-height: 1.2; }
-.opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.opt { background: #fff; border: 4px solid #000; padding: 14px; font-family: var(--font-ui); font-size: 1.6rem; font-weight: bold; cursor: pointer; width: 100%; text-align: left; transition: 0.1s; box-shadow: 4px 4px 0 #000; }
-.opt:hover { background: var(--x-yellow); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #000; }
+.modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
 
-svg { display: block; overflow: visible; stroke: #000; stroke-width: 3.5; stroke-linejoin: round; }
+.m-box {
+    background: #11111a;
+    border: 4px solid var(--x-yellow);
+    padding: 30px;
+    width: 90%;
+    max-width: 650px;
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.3);
+    border-radius: 8px;
+}
+
+.m-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 13px;
+    color: var(--x-yellow);
+    margin-bottom: 20px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.m-q {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #fff;
+}
+
+.opts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.opt {
+    background: #1a1a2e;
+    border: 2px solid var(--x-blue);
+    padding: 14px 20px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+.opt:hover {
+    background: var(--x-blue);
+    border-color: #fff;
+    padding-left: 25px;
+}
+
+@keyframes breatheBoss {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.02); }
+}
