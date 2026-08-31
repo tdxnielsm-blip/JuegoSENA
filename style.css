@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Teko:wght@500;700&display=swap');
+
+/* =========================================
+   1. RESET Y VARIABLES GLOBALES
+========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+:root {
+    --p1-color: #00ff55; /* Verde tóxico/héroe */
+    --p2-color: #ff003c; /* Rojo sangre/villano */
+    --hud-bg: #110817;   /* Fondo oscuro de las tarjetas */
+    --hud-border: #4a2b5e; 
+}
+
+/* =========================================
+   2. ESCENARIO "NINGÚN LUGAR" (ATMÓSFERA)
+========================================= */
+body {
+    font-family: 'Teko', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Cielo nocturno espeluznante (Morado a Negro) */
+    background: radial-gradient(circle at 50% 30%, #3b174d 0%, #17051f 50%, #05010a 100%);
+    
+    /* ¿QUIERES LA CASA REAL DE LA CARICATURA? 
+      Borra los "/*" de la línea de abajo y pon el link de tu imagen:
+    */
+    /* background: url('PON_AQUI_LA_RUTA_DE_TU_IMAGEN_DE_FONDO.jpg') center/cover no-repeat !important; */
+}
+
+/* La Luna Gigante y Tétrica */
+body::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #fffde6 0%, #d8cca6 40%, #7c684d 100%);
+    box-shadow: 0 0 80px 10px rgba(255, 240, 180, 0.2), inset -20px -20px 40px rgba(0,0,0,0.8);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* El Suelo Árido y Curvo (Perfecto para PC y Móvil) */
+body::after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    left: -10vw;
+    width: 120vw;
+    height: 22vh; 
+    min-height: 150px;
+    max-height: 250px;
+    border-radius: 50% 50% 0 0;
+    background: radial-gradient(ellipse at top, #261622 0%, #12090e 60%, #000000 100%);
+    border-top: 4px solid #3d2638;
+    box-shadow: 0 -20px 40px rgba(0,0,0,0.9);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* =========================================
+   3. CÁMARA (CONTENEDOR PRINCIPAL)
+========================================= */
+#cam {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 30px;
+    position: relative;
+    z-index: 10;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#cam.shake { animation: cameraShake 0.4s ease-in-out; }
+
+/* =========================================
+   4. HUD: BARRAS DE VIDA ESTILO ARCADE
+========================================= */
+.hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    z-index: 20;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.fighter-card {
+    background: var(--hud-bg);
+    border: 3px solid #22122b;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.8), inset 0 0 15px rgba(74, 43, 94, 0.5);
+    padding: 10px 15px;
+    width: 46%;
+    border-radius: 4px;
+    transform: skewX(-12deg); /* Inclinación agresiva de juego de pelea */
+}
+
+/* Para que el texto no se incline con la tarjeta */
+.fighter-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5px;
+    transform: skewX(12deg); 
+}
+
+.fighter-name {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 3px 3px 0px #000;
+    letter-spacing: 2px;
+}
+
+.hp-text {
+    font-size: 1.5rem;
+    color: #ccc;
+    font-weight: 700;
+    text-shadow: 2px 2px 0px #000;
+}
+
+/* Contenedor exterior de la barra (El marco) */
+.hp-bar-outer {
+    width: 100%;
+    height: 28px;
+    background: #0a050d;
+    border: 3px solid #4a2b5e;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 10px #000;
+}
+
+/* La vida en sí misma */
+.hp-bar-inner {
+    height: 100%;
+    width: 100%; /* El JS modifica esto (ej. width: 80%) */
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+}
+
+/* Efecto de cristal/brillo sobre la barra */
+.hp-bar-inner::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
+}
+
+/* Colores específicos de cada jugador */
+#p-hp { 
+    background: linear-gradient(90deg, #00882d, var(--p1-color)); 
+    box-shadow: 0 0 15px var(--p1-color); 
+}
+
+#e-hp { 
+    background: linear-gradient(90deg, #880017, var(--p2-color)); 
+    box-shadow: 0 0 15px var(--p2-color); 
+    margin-left: auto; /* Hace que la barra del enemigo se drene hacia la derecha */
+}
+
+#combo-txt {
+    font-family: 'Bangers', cursive;
+    font-size: 2.5rem;
+    color: #ffde00;
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 3px 3px 0px #000, 0 0 20px rgba(255, 222, 0, 0.5);
+}
+
+/* =========================================
+   5. ARENA Y PERSONAJES (LIMPIOS)
+========================================= */
+.arena {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-grow: 1;
+    padding: 0 10%;
+    padding-bottom: 8vh; /* Para que pisen exactamente la curva del suelo */
+    z-index: 10;
+}
+
+.sprite {
+    width: 250px; 
+    height: 300px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    filter: drop-shadow(0 20px 15px rgba(0,0,0,0.9)); 
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+/* CERO IMÁGENES DE RELLENO AQUÍ. TU HTML SE ENCARGA. */
+#p1 { }
+#p2 { transform: scaleX(-1); }
+
+/* =========================================
+   6. CONTROLES / BOTONES
+========================================= */
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; 
+    gap: 15px;
+    z-index: 20;
+    margin-bottom: 20px;
+}
+
+.btn {
+    font-family: 'Bangers', cursive;
+    font-size: 1.6rem;
+    padding: 12px 25px;
+    border: 3px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    background: linear-gradient(to bottom, #4a2b5e, #22122b);
+    color: #fff;
+    box-shadow: 4px 4px 0px #000;
+    transform: skewX(-8deg);
+    transition: all 0.1s;
+    letter-spacing: 1px;
+}
+
+.btn:hover { background: linear-gradient(to bottom, #5d3675, #2f193d); }
+.btn-atk { color: var(--p1-color); }
+.btn-trivia { color: var(--p2-color); }
+
+.btn:active:not(:disabled) {
+    transform: skewX(-8deg) translate(3px, 3px);
+    box-shadow: 1px 1px 0px #000;
+}
+.btn:disabled { opacity: 0.4; filter: grayscale(1); cursor: not-allowed; }
+
+/* =========================================
+   7. ADAPTACIÓN PERFECTA PARA MÓVILES
+========================================= */
+@media (max-width: 768px) {
+    #cam { padding: 10px; }
+    body::before { top: 5%; left: 5%; width: 120px; height: 120px; }
+    
+    /* El HUD se apila sin deformar las barras de vida */
+    .hud { flex-direction: column; align-items: center; gap: 10px; }
+    .fighter-card { width: 100%; padding: 8px 12px; transform: skewX(-8deg); }
+    .fighter-info { transform: skewX(8deg); }
+    .fighter-name { font-size: 1.5rem; }
+    .hp-bar-outer { height: 22px; }
+    
+    #combo-txt { top: 150px; font-size: 1.8rem; }
+
+    /* Los personajes encajan perfectamente en vertical */
+    .sprite { width: 150px; height: 200px; }
+    .arena { padding: 0 2%; padding-bottom: 12vh; }
+    
+    .controls { gap: 10px; margin-bottom: 5px; }
+    .btn { font-size: 1.3rem; padding: 10px; width: 47%; text-align: center; transform: skewX(0); }
+}
+
+/* =========================================
+   8. ANIMACIONES
+========================================= */
+@keyframes cameraShake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-8px, 8px) rotate(-1deg); }
+    50% { transform: translate(8px, -8px) rotate(1deg); }
+    75% { transform: translate(-4px, -4px); }
+}
+
+.hit {
+    filter: brightness(2) sepia(1) hue-rotate(320deg) saturate(5) drop-shadow(0 0 20px red) !important;
+    transform: translateX(10px);
+}
